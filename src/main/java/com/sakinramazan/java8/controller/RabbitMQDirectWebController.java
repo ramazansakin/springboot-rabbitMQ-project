@@ -1,5 +1,6 @@
 package com.sakinramazan.java8.controller;
 
+import com.sakinramazan.java8.model.Student;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,11 +15,25 @@ public class RabbitMQDirectWebController {
     @Autowired
     private AmqpTemplate amqpTemplate;
 
-    @GetMapping(value = "/producer")
-    public String producer(@RequestParam("exchangeName") String exchange, @RequestParam("routingKey") String routingKey,
-                           @RequestParam("messageData") String messageData) {
+//    Version - 1
+//    @GetMapping(value = "/producer")
+//    public String producer(@RequestParam("exchangeName") String exchange, @RequestParam("routingKey") String routingKey,
+//                           @RequestParam("messageData") String messageData) {
+//
+//        amqpTemplate.convertAndSend(exchange, routingKey, messageData);
+//
+//        return "Message sent to the RabbitMQ Successfully";
+//    }
 
-        amqpTemplate.convertAndSend(exchange, routingKey, messageData);
+//    Version - 2 for DLQ
+    @GetMapping(value = "/producer")
+    public String producer(@RequestParam("sName") String sName, @RequestParam("sId") String sId, @RequestParam("schoolName") String schoolName) {
+        Student student = new Student();
+        student.setsName(sName);
+        student.setsId(sId);
+        student.setSchoolName(schoolName);
+
+        amqpTemplate.convertAndSend("sampleExchange", "sampleRabbitMQ", student);
 
         return "Message sent to the RabbitMQ Successfully";
     }
