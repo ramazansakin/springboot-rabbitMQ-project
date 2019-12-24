@@ -11,11 +11,6 @@ public class RabbitMQConsumer {
 
     private static final Logger logger = LoggerFactory.getLogger(RabbitMQConsumer.class);
 
-//    @RabbitListener(queues = "${samplerabbitmq.rabbitmq.queue}")
-//    public void recievedMessage(Student student) {
-//        System.out.println("Message from rabbitMQ - Student ==> : " + student);
-//    }
-
     @RabbitListener(queues = "samplerabbitmq.rabbitmq.queue")
     public void recievedMessage(Student student) throws Exception {
         if (student.getSchoolName().isEmpty()) {
