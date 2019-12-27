@@ -15,12 +15,11 @@ public class RabbitMQWebController {
     @Autowired
     RabbitMQSender rabbitMQSender;
 
+    // instantiate an object and send it to message queue
     @GetMapping(value = "/producer")
     public String producer(@RequestParam("sName") String sName, @RequestParam("sId") String sId) {
 
-        Student student = new Student();
-        student.setsName(sName);
-        student.setsId(sId);
+        Student student = new Student(sName,sId, null);
         rabbitMQSender.send(student);
 
         return "Message sent to the RabbitMQ Successfully";
